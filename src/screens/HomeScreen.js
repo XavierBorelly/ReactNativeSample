@@ -4,9 +4,12 @@ import {
   Button,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
 
 import { Sentry, SentrySeverity } from 'react-native-sentry';
+
+import Config from 'react-native-config'
 
 import Info from '../components/Info';
 
@@ -59,21 +62,21 @@ export default class HomeScreen extends Component {
   }
 
   navigateToGreetings() {
-    Sentry.captureMessage("NavigateToGreetings", {
+    Sentry.captureMessage("Pizaaaaa send! :p :p :p", {
       level: SentrySeverity.Info,
     });
     this.navigate(GREETINGS_SCENE_NAME);
   }
 
   navigateToJsx() {
-    Sentry.captureMessage("NavigateToJsx", {
+    Sentry.captureMessage("Pizaaaaa send! :p :p :p", {
       level: SentrySeverity.Info,
     });
     this.navigate(JSX_SCENE_NAME);
   }
 
   navigateToState() {
-    Sentry.captureMessage("NavigateToState", {
+    Sentry.captureMessage("Pizaaaaa send! :p :p :p", {
       level: SentrySeverity.Info,
     });
     this.navigate(STATE_SCENE_NAME);
@@ -106,18 +109,11 @@ export default class HomeScreen extends Component {
           onPress={() => {
             Sentry.nativeCrash();
           }}
-          title="Native Crash"
+          title="Native-Crash"
         />
       </View>
 
-        <View style={styles.margin}>
-          <Button
-            onPress={() => {
-              console.log('FIX SENTRY ERROR');
-            }}
-            title="Throw error"
-          />
-        </View>
+        <Text>{Config.API_URL}</Text>
       </ScrollView>
     );
   }

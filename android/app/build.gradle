@@ -73,7 +73,6 @@ import com.android.build.OutputFile
  */
 
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/react-native-sentry/sentry.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -104,6 +103,25 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+
+
+    signingConfigs {
+        release {
+            storeFile file('../keystores/my-key.keystore')
+            storePassword ANDROID_STORE_PASSWORD
+            keyAlias 'alias_name'
+            keyPassword ANDROID_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        release {
+             minifyEnabled enableProguardInReleaseBuilds
+             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+             signingConfig signingConfigs.release
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -134,7 +152,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-sentry')
+    compile project(':react-native-config')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
@@ -146,3 +164,11 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+project.ext.envConfigFiles = [
+    debug: ".env.dev",
+    release: ".env.prod",
+    anycustombuildlowercase: ".env",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
